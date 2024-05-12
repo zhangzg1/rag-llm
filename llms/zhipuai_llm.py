@@ -55,7 +55,6 @@ if __name__ == "__main__":
 
     load_dotenv()
     api_key = os.getenv("zhipu_api_key")
-    print(api_key)
     llm = ZhipuAILLM(model="chatglm_std", temperature=0, zhipuai_api_key=api_key)
     answer = llm("你是谁？")
     print(answer)

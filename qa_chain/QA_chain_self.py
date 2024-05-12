@@ -26,23 +26,22 @@ class QA_chain_self():
     """
 
     # 基于召回结果和 query 结合起来构建的 prompt使用的默认提示模版
-    default_template_rq = """使用以下上下文来回答最后的问题。如果你不知道答案，就说你不知道，不要试图编造答
-    案。最多使用三句话。尽量使答案简明扼要。总是在回答的最后说“谢谢你的提问！。
-    {context}
-    问题: {question}
-    有用的回答:"""
+    default_template_rq = """请根据检索到的内容来回答最后的问题。如果你不知道答案，就说你不知道，不要试图编造答案。检索内容: {context}\
+问题: {question}
+你的回答: """
 
     def __init__(self, model: str, temperature: float = 0.0, top_k: int = 4, file_path: str = None,
-                 persist_path: str = None, embedding_model: str = None, appid: str = None, api_key: str = None,
-                 Spark_api_secret: str = None, Wenxin_secret_key: str = None, template=default_template_rq,
-                 vectordb: Any = None):
+                 persist_path: str = None, embedding_model: str = None, appid: str = None, chatgpt_api_key: str = None,
+                 zhipu_api_key: str = None, Spark_api_secret: str = None, Wenxin_secret_key: str = None,
+                 template=default_template_rq, vectordb: Any = None):
         self.model = model
         self.temperature = temperature
         self.top_k = top_k
         self.file_path = file_path
         self.persist_path = persist_path
         self.appid = appid
-        self.api_key = api_key
+        self.chatgpt_api_key = chatgpt_api_key
+        self.zhipu_api_key = zhipu_api_key
         self.Spark_api_secret = Spark_api_secret
         self.Wenxin_secret_key = Wenxin_secret_key
         self.embedding_model = embedding_model
@@ -51,8 +50,8 @@ class QA_chain_self():
             self.vectordb = vectordb
         else:
             self.vectordb = get_vectordb(self.file_path, self.persist_path, self.embedding_model)
-        self.llm = model_to_llm(self.model, self.temperature, self.api_key, self.appid, self.Spark_api_secret,
-                                self.Wenxin_secret_key)
+        self.llm = model_to_llm(self.model, self.temperature, self.chatgpt_api_key, self.zhipu_api_key, self.appid,
+                                self.Spark_api_secret, self.Wenxin_secret_key)
 
         self.QA_CHAIN_PROMPT = PromptTemplate(input_variables=["context", "question"],
                                               template=self.template)
@@ -86,10 +85,12 @@ if __name__ == "__main__":
     from dotenv import load_dotenv
 
     load_dotenv()
-    api_key = os.getenv("zhipu_api_key")
-    chain = QA_chain_self(model="Llama3-8b", temperature=0.0, top_k=4,
+    chatgpt_api_key = os.getenv("chatgpt_api_key")
+    zhipu_api_key = os.getenv("zhipu_api_key")
+    chain = QA_chain_self(model="chatglm_std", temperature=0.0, top_k=4,
                           file_path="/home/zhangzg/mygit/rag-llm/database/data/test.pdf",
                           persist_path="/home/zhangzg/mygit/rag-llm/vector_db/test", embedding_model="zhipuai",
-                          appid=None, api_key=api_key, Spark_api_secret=None, Wenxin_secret_key=None)
+                          appid=None, chatgpt_api_key=chatgpt_api_key, zhipu_api_key=zhipu_api_key,
+                          Spark_api_secret=None, Wenxin_secret_key=None)
     response = chain.answer(question="文章中DRAGON是指什么？")
     print(response)

@@ -10,7 +10,8 @@ from dotenv import load_dotenv
 
 load_dotenv()
 
-api_key = os.getenv("zhipu_api_key")
+chatgpt_api_key = os.getenv('chatgpt_api_key')
+zhipu_api_key = os.getenv("zhipu_api_key")
 
 LLM_MODEL_DICT = {
     # "openai": ["gpt-3.5-turbo", "gpt-3.5-turbo-16k-0613", "gpt-3.5-turbo-0613", "gpt-4", "gpt-4-32k"],
@@ -55,7 +56,7 @@ class Model_center():
     def chat_qa_chain_self_answer(self, question: str, chat_history: list = [], model: str = "chatglm_std",
                                   embedding_model: str = "zhipuai", temperature: float = 0.0, top_k: int = 2,
                                   file_path: str = DEFAULT_DB_PATH, persist_path: str = DEFAULT_PERSIST_PATH,
-                                  vectordb: Any = None, api_key=api_key):
+                                  vectordb: Any = None, chatgpt_api_key=chatgpt_api_key, zhipu_api_key=zhipu_api_key):
         """
         调用带历史记录的问答链进行回答
         """
@@ -69,7 +70,8 @@ class Model_center():
                                                                                        embedding_model=embedding_model,
                                                                                        file_path=file_path,
                                                                                        persist_path=persist_path,
-                                                                                       api_key=api_key,
+                                                                                       chatgpt_api_key=chatgpt_api_key,
+                                                                                       zhipu_api_key=zhipu_api_key,
                                                                                        vectordb=vectordb)
             chain = self.chat_qa_chain_self[(model, embedding_model)]
             return "", chain.answer(question=question)
@@ -79,7 +81,7 @@ class Model_center():
     def qa_chain_self_answer(self, question: str, chat_history: list = [], model: str = "chatglm_std",
                              embedding_model: str = "zhipuai", temperature: float = 0.0, top_k: int = 2,
                              file_path: str = DEFAULT_DB_PATH, persist_path: str = DEFAULT_PERSIST_PATH,
-                             vectordb: Any = None, api_key=api_key):
+                             vectordb: Any = None, chatgpt_api_key=chatgpt_api_key, zhipu_api_key=zhipu_api_key):
         """
         调用不带历史记录的问答链进行回答
         """
@@ -88,9 +90,10 @@ class Model_center():
         try:
             if (model, embedding_model) not in self.qa_chain_self:
                 self.qa_chain_self[(model, embedding_model)] = QA_chain_self(model=model, temperature=temperature,
-                                                                             top_k=top_k, api_key=api_key,
+                                                                             top_k=top_k, file_path=file_path,
+                                                                             chatgpt_api_key=chatgpt_api_key,
+                                                                             zhipu_api_key=zhipu_api_key,
                                                                              embedding_model=embedding_model,
-                                                                             file_path=file_path,
                                                                              persist_path=persist_path,
                                                                              vectordb=vectordb)
             chain = self.qa_chain_self[(model, embedding_model)]
@@ -137,7 +140,8 @@ def format_chat_prompt(message, chat_history):
     return prompt
 
 
-def respond(message, chat_history, model: str = "chatglm_std", history_len=3, temperature=0.1, api_key=api_key):
+def respond(message, chat_history, model: str = "chatglm_std", history_len=3, temperature=0.1,
+            chatgpt_api_key=chatgpt_api_key, zhipu_api_key=zhipu_api_key):
     """
     该函数用于生成机器人的回复。
 
@@ -157,7 +161,8 @@ def respond(message, chat_history, model: str = "chatglm_std", history_len=3, te
         # 调用上面的函数，将用户的消息和聊天历史记录格式化为一个 prompt。
         formatted_prompt = format_chat_prompt(message, chat_history)
         # 调用模型生成回复
-        llm = model_to_llm(model=model, temperature=temperature, api_key=api_key)
+        llm = model_to_llm(model=model, temperature=temperature, chatgpt_api_key=chatgpt_api_key,
+                           zhipu_api_key=zhipu_api_key)
         bot_message = llm(formatted_prompt)
         # 将bot_message中\n换为<br/>
         bot_message = re.sub(r"\\n", '<br/>', bot_message)

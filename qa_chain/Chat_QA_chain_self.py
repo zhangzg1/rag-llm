@@ -27,8 +27,8 @@ class Chat_QA_chain_self:
 
     def __init__(self, model: str, temperature: float = 0.0, top_k: int = 4, chat_history: list = [],
                  file_path: str = None, persist_path: str = None, embedding_model: str = None, appid: str = None,
-                 api_key: str = None, Spark_api_secret: str = None, Wenxin_secret_key: str = None,
-                 vectordb: Any = None):
+                 chatgpt_api_key: str = None, zhipu_api_key: str = None, Spark_api_secret: str = None,
+                 Wenxin_secret_key: str = None, vectordb: Any = None):
         self.model = model
         self.temperature = temperature
         self.top_k = top_k
@@ -37,7 +37,8 @@ class Chat_QA_chain_self:
         self.file_path = file_path
         self.persist_path = persist_path
         self.appid = appid
-        self.api_key = api_key
+        self.chatgpt_api_key = chatgpt_api_key
+        self.zhipu_api_key = zhipu_api_key
         self.Spark_api_secret = Spark_api_secret
         self.Wenxin_secret_key = Wenxin_secret_key
         if file_path is None:
@@ -72,8 +73,8 @@ class Chat_QA_chain_self:
         if len(question) == 0:
             return ""
 
-        llm = model_to_llm(self.model, self.temperature, self.api_key, self.appid, self.Spark_api_secret,
-                           self.Wenxin_secret_key)
+        llm = model_to_llm(self.model, self.temperature, self.chatgpt_api_key, self.zhipu_api_key, self.appid,
+                           self.Spark_api_secret, self.Wenxin_secret_key)
 
         retriever = self.vectordb.as_retriever(search_type="similarity",
                                                search_kwargs={'k': self.top_k})  # 默认similarity，k=4
@@ -86,8 +87,8 @@ class Chat_QA_chain_self:
         # result里有question、chat_history、answer
         result = qa({"question": question, "chat_history": self.chat_history})['answer']
         answer = re.sub(r"\\n", '<br/>', result)
-        self.chat_history.append((question, answer))  # 更新历史记录
-        return self.chat_history  # 返回本次回答和更新后的历史记录
+        self.chat_history.append((question, answer))    # 更新历史记录
+        return self.chat_history                        # 返回本次回答和更新后的历史记录
 
 
 if __name__ == '__main__':
@@ -95,12 +96,12 @@ if __name__ == '__main__':
     from dotenv import load_dotenv
 
     load_dotenv()
-    api_key = os.getenv("zhipu_api_key")
-    chat_chain = Chat_QA_chain_self(model="chatglm_std", temperature=0.0, top_k=2,
+    chatgpt_api_key = os.getenv("chatgpt_api_key")
+    zhipu_api_key = os.getenv("zhipu_api_key")
+    chat_chain = Chat_QA_chain_self(model="gpt-3.5-turbo", temperature=0.0, top_k=2,
                                     file_path="/home/zhangzg/mygit/rag-llm/database/data/test.pdf",
                                     persist_path="/home/zhangzg/mygit/rag-llm/vector_db/test",
-                                    embedding_model="zhipuai",
-                                    appid=None, api_key=api_key, Spark_api_secret=None,
-                                    Wenxin_secret_key=None)
+                                    embedding_model="zhipuai", appid=None, chatgpt_api_key=chatgpt_api_key,
+                                    zhipu_api_key=zhipu_api_key, Spark_api_secret=None, Wenxin_secret_key=None)
     response = chat_chain.answer(question="文章中DRAGON是指什么？")
     print(response)
