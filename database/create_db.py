@@ -86,10 +86,10 @@ def create_vectordb_zhipu(tar_path, persist_directory):
 
 
 if __name__ == "__main__":
-    tar_path = "/home/zhangzg/LLM/rags/database/data/test.pdf"  # 选择1: 文件夹中的所有文件 或 选择2: 单个文件
+    tar_path = "/home/zhangzg/mygit/rag-llm/database/data/Introduction.md"  # 选择1: 文件夹中的所有文件 或 选择2: 单个文件
 
     # 构建向量数据库路径
-    persist_directory = '/home/zhangzg/LLM/rags/vector_db/test'
+    persist_directory = '/home/zhangzg/mygit/rag-llms/vector_db/test'
     vectordb = create_vectordb_zhipu(tar_path, persist_directory)
 
     print(f"向量库中存储的数量：{vectordb._collection.count()}")

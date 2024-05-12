@@ -1,4 +1,3 @@
-from __future__ import annotations
 import logging
 from typing import Dict, List, Any
 from langchain.embeddings.base import Embeddings

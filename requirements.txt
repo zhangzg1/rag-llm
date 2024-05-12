@@ -1,0 +1,17 @@
+langchain==0.1.11
+gradio==4.20.0
+zhipuai==2.0.1
+transformers==4.38.2
+chromadb==0.4.14
+qianfan==0.3.3
+spark-ai-python==0.3.15
+torch==2.2.2
+pymupdf==1.24.0
+unstructured==0.12.6
+markdown==3.6
+sentencepiece==0.2.0
+flash-attn==2.5.8
+accelerate==0.29.3
+websocket_client==1.7.0
+openai==1.13.3
+Requests==2.31.0

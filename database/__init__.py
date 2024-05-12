@@ -1,1 +1,1 @@
-from .create_db import create_vectordb_zhipu
+from .create_db import *

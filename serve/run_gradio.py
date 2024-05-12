@@ -2,10 +2,7 @@ import sys
 
 sys.path.append("../")
 import gradio as gr
-from qa_chain.model_to_llm import model_to_llm
-from qa_chain.get_vectordb import get_vectordb
-from qa_chain.Chat_QA_chain_self import Chat_QA_chain_self
-from qa_chain.QA_chain_self import QA_chain_self
+from qa_chain import *
 from typing import Any
 import re
 import os
@@ -32,12 +29,12 @@ LLM_MODEL_LIST = sum(list(LLM_MODEL_DICT.values()), [])
 INIT_LLM = "chatglm_std"
 EMBEDDING_MODEL_LIST = ['zhipuai', 'openai', 'm3e']
 INIT_EMBEDDING_MODEL = "zhipuai"
-DEFAULT_DB_PATH = "/home/zhangzg/LLM/rags/database/data/Introduction.md"
-DEFAULT_PERSIST_PATH = "/home/zhangzg/LLM/rags/vector_db/ok"
-AIGC_AVATAR_PATH = "/home/zhangzg/LLM/rags/figures/datawhale_avatar.png"
-DATAWHALE_AVATAR_PATH = "/home/zhangzg/LLM/rags/figures/datawhale_avatar.png"
-AIGC_LOGO_PATH = "/home/zhangzg/LLM/rags/figures/aigc_logo.png"
-DATAWHALE_LOGO_PATH = "/home/zhangzg/LLM/rags/figures/datawhale_logo.png"
+DEFAULT_DB_PATH = "/home/zhangzg/mygit/rag-llm/database/data/Introduction.md"
+DEFAULT_PERSIST_PATH = "/home/zhangzg/mygit/rag-llm/vector_db/ok"
+AIGC_AVATAR_PATH = "/home/zhangzg/mygit/rag-llm/database/figures/datawhale_avatar.png"
+DATAWHALE_AVATAR_PATH = "/home/zhangzg/mygit/rag-llm/database/figures/datawhale_avatar.png"
+AIGC_LOGO_PATH = "/home/zhangzg/mygit/rag-llm/database/figures/aigc_logo.png"
+DATAWHALE_LOGO_PATH = "/home/zhangzg/mygit/rag-llm/database/figures/datawhale_logo.png"
 
 
 def get_model_by_platform(platform):
@@ -200,7 +197,7 @@ with block as demo:
                 # 创建提交按钮。
                 db_with_his_btn = gr.Button("Chat db with history")
                 db_wo_his_btn = gr.Button("Chat db without history")
-                llm_btn = gr.Button("Chat with llm")
+                llm_btn = gr.Button("Chat with llms")
             with gr.Row():
                 # 创建一个清除按钮，用于清除聊天机器人组件的内容。
                 clear = gr.ClearButton(
@@ -218,7 +215,7 @@ with block as demo:
                                         1,
                                         value=0.01,
                                         step=0.01,
-                                        label="llm temperature",
+                                        label="llms temperature",
                                         interactive=True)
 
                 top_k = gr.Slider(1,

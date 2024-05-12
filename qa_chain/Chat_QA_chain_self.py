@@ -2,8 +2,7 @@ import sys
 
 sys.path.append("../")
 from langchain.chains import ConversationalRetrievalChain
-from qa_chain.model_to_llm import model_to_llm
-from qa_chain.get_vectordb import get_vectordb
+from qa_chain import *
 from typing import Any
 import re
 
@@ -94,11 +93,13 @@ class Chat_QA_chain_self:
 if __name__ == '__main__':
     import os
     from dotenv import load_dotenv
+
     load_dotenv()
     api_key = os.getenv("zhipu_api_key")
     chat_chain = Chat_QA_chain_self(model="chatglm_std", temperature=0.0, top_k=2,
-                                    file_path="/home/zhangzg/LLM/rags/database/data/test.pdf",
-                                    persist_path="/home/zhangzg/LLM/rags/vector_db/test", embedding_model="zhipuai",
+                                    file_path="/home/zhangzg/mygit/rag-llm/database/data/test.pdf",
+                                    persist_path="/home/zhangzg/mygit/rag-llm/vector_db/test",
+                                    embedding_model="zhipuai",
                                     appid=None, api_key=api_key, Spark_api_secret=None,
                                     Wenxin_secret_key=None)
     response = chat_chain.answer(question="文章中DRAGON是指什么？")

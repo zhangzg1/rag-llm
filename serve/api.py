@@ -37,9 +37,9 @@ class Item(BaseModel):
     # Secret_key
     Wenxin_secret_key: str = None
     # 数据库路径
-    db_path: str = "/home/zhangzg/LLM/rags/vector_db/test"
+    db_path: str = "/home/zhangzg/mygit/rag-llm/vector_db/test"
     # 源文件路径
-    file_path: str = "/home/zhangzg/LLM/rags/database/data/test.pdf"
+    file_path: str = "/home/zhangzg/mygit/rag-llm/database/data/test.pdf"
     # prompt template
     prompt_template: str = template
     # Template 变量
