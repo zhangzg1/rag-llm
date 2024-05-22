@@ -46,6 +46,6 @@ if __name__ == "__main__":
     chatgpt_api_key = os.getenv("chatgpt_api_key")
     zhipu_api_key = os.getenv('zhipu_api_key')
     llm = model_to_llm(model="chatglm_std", temperature=0.0, chatgpt_api_key=chatgpt_api_key,
-                       zhipu_api_key=zhipu_api_key, appid=None, Spark_api_secret=None, Wenxin_secret_key=None)
+                       zhipu_api_key=zhipu_api_key)
     answer = llm("你是谁？")
     print(answer)

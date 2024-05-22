@@ -41,6 +41,8 @@ class Chat_QA_chain_self:
         self.zhipu_api_key = zhipu_api_key
         self.Spark_api_secret = Spark_api_secret
         self.Wenxin_secret_key = Wenxin_secret_key
+        self.llm = model_to_llm(self.model, self.temperature, self.chatgpt_api_key, self.zhipu_api_key, self.appid,
+                           self.Spark_api_secret, self.Wenxin_secret_key)
         if file_path is None:
             self.vectordb = vectordb
         else:
@@ -73,22 +75,19 @@ class Chat_QA_chain_self:
         if len(question) == 0:
             return ""
 
-        llm = model_to_llm(self.model, self.temperature, self.chatgpt_api_key, self.zhipu_api_key, self.appid,
-                           self.Spark_api_secret, self.Wenxin_secret_key)
-
         retriever = self.vectordb.as_retriever(search_type="similarity",
                                                search_kwargs={'k': self.top_k})  # 默认similarity，k=4
 
         qa = ConversationalRetrievalChain.from_llm(
-            llm=llm,
+            llm=self.llm,
             retriever=retriever
         )
 
         # result里有question、chat_history、answer
         result = qa({"question": question, "chat_history": self.chat_history})['answer']
         answer = re.sub(r"\\n", '<br/>', result)
-        self.chat_history.append((question, answer))    # 更新历史记录
-        return self.chat_history                        # 返回本次回答和更新后的历史记录
+        self.chat_history.append((question, answer))  # 更新历史记录
+        return self.chat_history  # 返回本次回答和更新后的历史记录
 
 
 if __name__ == '__main__':
@@ -98,10 +97,12 @@ if __name__ == '__main__':
     load_dotenv()
     chatgpt_api_key = os.getenv("chatgpt_api_key")
     zhipu_api_key = os.getenv("zhipu_api_key")
-    chat_chain = Chat_QA_chain_self(model="gpt-3.5-turbo", temperature=0.0, top_k=2,
+    chat_chain = Chat_QA_chain_self(model="gpt-3.5-turbo", temperature=0.0, top_k=2, embedding_model="zhipuai",
                                     file_path="/home/zhangzg/mygit/rag-llm/database/data/test.pdf",
                                     persist_path="/home/zhangzg/mygit/rag-llm/vector_db/test",
-                                    embedding_model="zhipuai", appid=None, chatgpt_api_key=chatgpt_api_key,
-                                    zhipu_api_key=zhipu_api_key, Spark_api_secret=None, Wenxin_secret_key=None)
-    response = chat_chain.answer(question="文章中DRAGON是指什么？")
+                                    chatgpt_api_key=chatgpt_api_key, zhipu_api_key=zhipu_api_key)
+    question = "文章中DRAGON是指什么？"
+    response = chat_chain.answer(question=question)
+    # 不进行检索，直接调用 llm 回答
+    # response = chat_chain.llm(question)
     print(response)
