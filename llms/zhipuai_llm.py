@@ -48,13 +48,3 @@ class ZhipuAILLM(LLM):
     def _identifying_params(self) -> Mapping[str, Any]:
         return {**{"model": self.model}, **self._default_params}
 
-
-if __name__ == "__main__":
-    import os
-    from dotenv import load_dotenv
-
-    load_dotenv()
-    api_key = os.getenv("zhipu_api_key")
-    llm = ZhipuAILLM(model="chatglm_std", temperature=0, zhipuai_api_key=api_key)
-    answer = llm("你是谁？")
-    print(answer)
