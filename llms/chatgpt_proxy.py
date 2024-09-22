@@ -13,7 +13,7 @@ class ChatGPT_Proxy(LLM):
     def _call(self, prompt: str, stop: Optional[List[str]] = None,
               run_manager: Optional[CallbackManagerForLLMRun] = None,
               **kwargs: Any):
-        url = "https://api.openai-sb.com/v1/chat/completions"
+        url = "xxxxxxxxxxxxxx"
         headers = {
             "Content-Type": "application/json",
             "Authorization": "Bearer " + self.chatgpt_api_key
