@@ -37,15 +37,3 @@ def model_to_llm(model: str = None, temperature: float = 0.0, chatgpt_api_key: s
         raise ValueError(f"model{model} not support!!!")
     return llm
 
-
-if __name__ == "__main__":
-    import os
-    from dotenv import load_dotenv
-
-    load_dotenv()
-    chatgpt_api_key = os.getenv("chatgpt_api_key")
-    zhipu_api_key = os.getenv('zhipu_api_key')
-    llm = model_to_llm(model="chatglm_std", temperature=0.0, chatgpt_api_key=chatgpt_api_key,
-                       zhipu_api_key=zhipu_api_key)
-    answer = llm("你是谁？")
-    print(answer)
