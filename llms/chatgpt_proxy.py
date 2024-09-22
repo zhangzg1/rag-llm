@@ -37,15 +37,3 @@ class ChatGPT_Proxy(LLM):
     @property
     def _llm_type(self) -> str:
         return "chatgpt"
-
-
-# 使用示例
-if __name__ == "__main__":
-    import os
-    from dotenv import load_dotenv
-
-    load_dotenv()
-    api_key = os.getenv("chatgpt_api_key")
-    llm = ChatGPT_Proxy(model="gpt-3.5-turbo", temperature=0.4, chatgpt_api_key=api_key)
-    response = llm("你好，我想了解更多关于人工智能的信息。")
-    print(response)
