@@ -84,24 +84,3 @@ def create_vectordb_zhipu(tar_path, persist_directory):
     vectordb.persist()
     return vectordb
 
-
-if __name__ == "__main__":
-    tar_path = "/home/zhangzg/mygit/rag-llm/database/data/Introduction.md"  # 选择1: 文件夹中的所有文件 或 选择2: 单个文件
-
-    # 构建向量数据库路径
-    persist_directory = '/home/zhangzg/mygit/rag-llms/vector_db/test'
-    vectordb = create_vectordb_zhipu(tar_path, persist_directory)
-
-    print(f"向量库中存储的数量：{vectordb._collection.count()}")
-    """"
-        根据问题在所存储的向量数据库中的进行检索，然后返回最相似的文本内容，这里返回的文本内容是
-        作为后续模型输入的上下文的，它这里检索的方式是基于向量的相似度检索，其实api_rag这个代码
-        主要就是将检索到的文本和问题作为输入，最终模型输出答案。这里 k 越大的话，检索到的文本内容
-        就会越多，当然不相关的内容可能也会增加，所以k的值需要根据实际情况来调整。
-    """
-    question = "什么是DRAGON?"
-    docs = vectordb.similarity_search(question, k=1)
-    print(f"检索到的内容数：{len(docs)}")
-    for i, doc in enumerate(docs):
-        print(f"检索到的第{i}个内容: \n {doc.page_content}",
-              end="\n-----------------------------------------------------\n")
