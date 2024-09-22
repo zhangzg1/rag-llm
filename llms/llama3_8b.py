@@ -14,7 +14,7 @@ class Llama3_8b(LLM):
         super().__init__()
         self.pipeline = transformers.pipeline(
             "text-generation",
-            model="/home/zhangzg/LLM/model/Llama3-Chinese-8B-Instruct",
+            model="xxxxxxxxxxxxxxxxxx",
             model_kwargs={"torch_dtype": torch.bfloat16},
             device="cuda",
         )
@@ -44,8 +44,3 @@ class Llama3_8b(LLM):
     def _llm_type(self) -> str:
         return "Llama3-8b"
 
-
-if __name__ == "__main__":
-    llm = Llama3_8b(temperature=0.3)
-    answer = llm("你是谁？")
-    print(answer)
