@@ -14,11 +14,6 @@ chatgpt_api_key = os.getenv('chatgpt_api_key')
 zhipu_api_key = os.getenv("zhipu_api_key")
 
 LLM_MODEL_DICT = {
-    # "openai": ["gpt-3.5-turbo", "gpt-3.5-turbo-16k-0613", "gpt-3.5-turbo-0613", "gpt-4", "gpt-4-32k"],
-    # "wenxin": ["ERNIE-Bot", "ERNIE-Bot-4", "ERNIE-Bot-turbo"],
-    # "xinhuo": ["Spark-1.5", "Spark-2.0"],
-    # "llama": ["Atom-7b", "Llama3-8b"],
-    # "zhipuai": ["chatglm_pro", "chatglm_std", "chatglm_lite"]
     "openai": ["gpt-3.5-turbo", "gpt-4"],
     "wenxin": ["ERNIE-Bot"],
     "xinhuo": ["Spark-2.0"],
@@ -30,12 +25,12 @@ LLM_MODEL_LIST = sum(list(LLM_MODEL_DICT.values()), [])
 INIT_LLM = "chatglm_std"
 EMBEDDING_MODEL_LIST = ['zhipuai', 'openai', 'm3e']
 INIT_EMBEDDING_MODEL = "zhipuai"
-DEFAULT_DB_PATH = "/home/zhangzg/mygit/rag-llm/database/data/Introduction.md"
-DEFAULT_PERSIST_PATH = "/home/zhangzg/mygit/rag-llm/vector_db/ok"
-AIGC_AVATAR_PATH = "/home/zhangzg/mygit/rag-llm/database/figures/datawhale_avatar.png"
-DATAWHALE_AVATAR_PATH = "/home/zhangzg/mygit/rag-llm/database/figures/datawhale_avatar.png"
-AIGC_LOGO_PATH = "/home/zhangzg/mygit/rag-llm/database/figures/aigc_logo.png"
-DATAWHALE_LOGO_PATH = "/home/zhangzg/mygit/rag-llm/database/figures/datawhale_logo.png"
+DEFAULT_DB_PATH = "../database/data/Introduction.md"
+DEFAULT_PERSIST_PATH = "../vector_db/test"
+AIGC_AVATAR_PATH = "../database/figures/datawhale_avatar.png"
+DATAWHALE_AVATAR_PATH = "../database/figures/datawhale_avatar.png"
+AIGC_LOGO_PATH = "../database/figures/aigc_logo.png"
+DATAWHALE_LOGO_PATH = "../database/figures/datawhale_logo.png"
 
 
 def get_model_by_platform(platform):
@@ -249,16 +244,6 @@ with block as demo:
                                               label="Embedding model",
                                               value=INIT_EMBEDDING_MODEL)
 
-        """
-            1、当点击“知识库向量化”时，会将你选中的文件的内容进行向量化，然后存储到数据库中。也就是存储在 DEFAULT_PERSIST_PATH 这个路径下。
-            2、当你进行检索问答时，会将默认的文件（ DEFAULT_DB_PATH 路径）进行向量化，然后也存储在 DEFAULT_PERSIST_PATH 这个路径下，
-            此时这个路径下就有了两个文件的向量化数据了。所以每当你放入文件点击“向量化”时就会将新文件的内容向量化并且存储在路径下，然后每次点击
-            检索问答时，就会将默认文件向量化然后存储在这个路径下。
-            3、单独和大模型聊天时，不会使用数据库中的向量化数据，而是直接使用大模型进行回答。但是和大模型聊天是会结合你的历史记录进行回答的。
-            所以可以先清除历史记录，然后再和大模型聊天。
-            4、进行带历史的检索聊天时，要先清空历史记录，然后再进行检索聊天。不然无法正常使用。
-            5、带历史检索聊天和直接与大模型聊天这两个都是会结合聊天记录的，带历史检索和不带历史检索都会进行一次默认文件的向量化。
-        """
 
         # 设置初始化向量数据库按钮的点击事件。当点击时，调用 get_vectordb 函数，并传入用户的文件和希望使用的 Embedding 模型。
         init_db.click(get_vectordb_info, inputs=[file, embedding_model], outputs=[msg])
