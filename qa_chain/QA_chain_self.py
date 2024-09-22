@@ -11,18 +11,6 @@ import re
 class QA_chain_self():
     """"
     不带历史记录的问答链
-    - model：调用的模型名称
-    - temperature：温度系数，控制生成的随机性
-    - top_k：返回检索的前k个相似文档
-    - file_path：建库文件所在路径
-    - persist_path：向量数据库持久化路径
-    - appid：星火需要输入
-    - api_key：所有模型都需要
-    - Spark_api_secret：星火秘钥
-    - Wenxin_secret_key：文心秘钥
-    - embeddings：使用的embedding模型  
-    - embedding_key：使用的embedding模型的秘钥（智谱或者OpenAI）
-    - template：可以自定义提示模板，没有输入则使用默认的提示模板default_template_rq    
     """
 
     # 基于召回结果和 query 结合起来构建的 prompt使用的默认提示模版
@@ -79,20 +67,3 @@ class QA_chain_self():
         answer = re.sub(r"\\n", '<br/>', result)
         return answer
 
-
-if __name__ == "__main__":
-    import os
-    from dotenv import load_dotenv
-
-    load_dotenv()
-    chatgpt_api_key = os.getenv("chatgpt_api_key")
-    zhipu_api_key = os.getenv("zhipu_api_key")
-    chain = QA_chain_self(model="chatglm_std", temperature=0.0, top_k=4, embedding_model="zhipuai",
-                          file_path="/home/zhangzg/mygit/rag-llm/database/data/test.pdf",
-                          persist_path="/home/zhangzg/mygit/rag-llm/vector_db/test",
-                          chatgpt_api_key=chatgpt_api_key, zhipu_api_key=zhipu_api_key)
-    question = "文章中DRAGON是指什么？"
-    response = chain.answer(question=question)
-    # 不进行检索，直接调用 llm 回答
-    # response = chain.llm(question)
-    print(response)
