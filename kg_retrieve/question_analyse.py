@@ -38,9 +38,3 @@ class Question_Analyse:
             all_entity.add(original_value)
         return list(all_entity)
 
-
-if __name__ == '__main__':
-    Q = Question_Analyse()
-    question = '请介绍一下台湾的历史文化。'
-    entity = Q.question_to_entity(question)
-    print(entity)
