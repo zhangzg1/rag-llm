@@ -65,10 +65,3 @@ class Entity_Search:
         # 使用set来去重，同时将内部的列表转换为元组
         unique_triples = list(set(tuple(item) for item in all_triples))
         return unique_triples
-
-
-if __name__ == '__main__':
-    searcher = Entity_Search()
-    entity_list = ['中国', '台湾']
-    triples = searcher.search_triple(entity_list, hop=1)
-    print(triples)
