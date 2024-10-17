@@ -5,7 +5,7 @@ import ahocorasick
 class Question_Analyse:
     def __init__(self):
         self.graph = Graph(
-            host="172.22.109.201",
+            host="xxx.xx.xxx.xxx",
             user="neo4j",
             password="neo4j")
 
