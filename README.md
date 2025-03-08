@@ -25,7 +25,7 @@ pip install -r requirements.txt
 
 ## 4、核心架构
 
-[https://github.com/zhangzg1/rag-llm/database/figures/rag.jpg]()
+https://github.com/zhangzg1/rag-llm/blob/main/database/figures/rag.jpg
 
 整个 RAG 项目的核心模块为三个部分：
 
