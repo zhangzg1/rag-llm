@@ -14,14 +14,14 @@ def model_to_llm(model: str = None, temperature: float = 0.0, chatgpt_api_key: s
         llm = ChatGPT_Proxy(model=model, temperature=temperature, chatgpt_api_key=chatgpt_api_key)
     # 调用百度文心大模型
     elif model in ["ERNIE-Bot", "ERNIE-Bot-4", "ERNIE-Bot-turbo"]:
-        if api_key == None or Wenxin_secret_key == None:
+        if Wenxin_secret_key == None or Wenxin_secret_key == None:
             print('请输入API_KEY')
-        llm = Wenxin_LLM(model=model, temperature=temperature, api_key=api_key, secret_key=Wenxin_secret_key)
+        llm = Wenxin_LLM(model=model, temperature=temperature, secret_key=Wenxin_secret_key)
     # 调用星火大模型
     elif model in ["Spark-1.5", "Spark-2.0"]:
-        if api_key == None or appid == None and Spark_api_secret == None:
+        if Spark_api_secret == None or appid == None and Spark_api_secret == None:
             print('请输入API_KEY')
-        llm = Spark_LLM(model=model, temperature=temperature, appid=appid, api_secret=Spark_api_secret, api_key=api_key)
+        llm = Spark_LLM(model=model, temperature=temperature, appid=appid, api_secret=Spark_api_secret)
     # 调用 ChatGLM 模型
     elif model in ["chatglm_pro", "chatglm_std", "chatglm_lite"]:
         if zhipu_api_key == None:
@@ -36,4 +36,3 @@ def model_to_llm(model: str = None, temperature: float = 0.0, chatgpt_api_key: s
     else:
         raise ValueError(f"model{model} not support!!!")
     return llm
-

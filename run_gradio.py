@@ -1,13 +1,12 @@
 import sys
 
-sys.path.append("../")
+sys.path.append("/")
 import gradio as gr
 from qa_chain import *
 from typing import Any
 import re
 import os
 from dotenv import load_dotenv
-
 load_dotenv()
 
 chatgpt_api_key = os.getenv('chatgpt_api_key')
@@ -16,7 +15,7 @@ zhipu_api_key = os.getenv("zhipu_api_key")
 LLM_MODEL_DICT = {
     "openai": ["gpt-3.5-turbo", "gpt-4"],
     "wenxin": ["ERNIE-Bot"],
-    "xinhuo": ["Spark-2.0"],
+    "xinghuo": ["Spark-2.0"],
     "llama": ["Atom-7b", "Llama3-8b"],
     "zhipuai": ["chatglm_pro", "chatglm_std"]
 }
@@ -25,12 +24,10 @@ LLM_MODEL_LIST = sum(list(LLM_MODEL_DICT.values()), [])
 INIT_LLM = "chatglm_std"
 EMBEDDING_MODEL_LIST = ['zhipuai', 'openai', 'm3e']
 INIT_EMBEDDING_MODEL = "zhipuai"
-DEFAULT_DB_PATH = "../database/data/Introduction.md"
-DEFAULT_PERSIST_PATH = "../vector_db/test"
-AIGC_AVATAR_PATH = "../database/figures/datawhale_avatar.png"
-DATAWHALE_AVATAR_PATH = "../database/figures/datawhale_avatar.png"
-AIGC_LOGO_PATH = "../database/figures/aigc_logo.png"
-DATAWHALE_LOGO_PATH = "../database/figures/datawhale_logo.png"
+DEFAULT_DB_PATH = "database/data/hongloumeng.md"
+DEFAULT_PERSIST_PATH = "vector_db/test"
+AIGC_LOGO_PATH = "database/figures/aigc_logo.png"
+DATAWHALE_LOGO_PATH = "database/figures/datawhale_logo.png"
 
 
 def get_model_by_platform(platform):
@@ -112,14 +109,7 @@ def get_vectordb_info(file_path=DEFAULT_DB_PATH, embedding_model: str = None, pe
 
 def format_chat_prompt(message, chat_history):
     """
-    该函数用于格式化聊天 prompt。
-
-    参数:
-    message: 当前的用户消息。
-    chat_history: 聊天历史记录。
-
-    返回:
-    prompt: 格式化后的 prompt。
+    该函数用于格式化聊天 prompt
     """
     # 初始化一个空字符串，用于存放格式化后的聊天 prompt。
     prompt = ""
@@ -178,17 +168,14 @@ with block as demo:
                  container=False)
 
         with gr.Column(scale=2):
-            gr.Markdown("""<h1><center>                                                   RAG应用系统🦜🔗</center></h1>
-                <center>LLMs-RAG</center>
-                """)
+            gr.Markdown("""<h1><center>                              RAG应用系统🦜🔗</center></h1>""")
 
         gr.Image(value=DATAWHALE_LOGO_PATH, scale=1, min_width=10, show_label=False, show_download_button=False,
                  container=False)
 
     with gr.Row():
         with gr.Column(scale=4):
-            chatbot = gr.Chatbot(height=400, show_copy_button=True, show_share_button=True,
-                                 avatar_images=(AIGC_AVATAR_PATH, DATAWHALE_AVATAR_PATH))
+            chatbot = gr.Chatbot(height=400, show_copy_button=True, show_share_button=True)
 
             # 创建一个文本框组件，用于输入 prompt。
             msg = gr.Textbox(label="Prompt/问题")

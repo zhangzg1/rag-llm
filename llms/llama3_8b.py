@@ -14,7 +14,7 @@ class Llama3_8b(LLM):
         super().__init__()
         self.pipeline = transformers.pipeline(
             "text-generation",
-            model="xxxxxxxxxxxxxxxxxx",
+            model="../models/Llama-3-8B-Instruct",
             model_kwargs={"torch_dtype": torch.bfloat16},
             device="cuda",
         )

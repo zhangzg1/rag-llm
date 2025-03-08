@@ -14,9 +14,9 @@ class Atom_7b(LLM):
     def __init__(self, temperature: float = 0.1):
         super().__init__()
         self.temperature = max(0.1, min(1.0, temperature))
-        self.tokenizer = AutoTokenizer.from_pretrained("xxxxxxxxxxxxx",
+        self.tokenizer = AutoTokenizer.from_pretrained("../models/Atom-7B-Chat",
                                                        trust_remote_code=True)
-        self.model = AutoModelForCausalLM.from_pretrained("xxxxxxxxxxxxxx",
+        self.model = AutoModelForCausalLM.from_pretrained("../models/Atom-7B-Chat",
                                                           device_map="auto", trust_remote_code=True,
                                                           torch_dtype=torch.float16).eval()
 

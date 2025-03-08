@@ -58,7 +58,7 @@ class Knowledge_Graph:
 
 
 if __name__ == '__main__':
-    data_path = '/database/data/kg.json'
+    data_path = 'data/kg.json'
     kg = Knowledge_Graph(data_path)
     print("导入知识图谱...")
     kg.create_graph()

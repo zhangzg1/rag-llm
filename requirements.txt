@@ -1,5 +1,7 @@
 langchain==0.1.11
-gradio==4.20.0
+langchain-community==0.0.29
+langchain-core==0.1.52
+gradio==4.42.0
 zhipuai==2.0.1
 transformers==4.38.2
 chromadb==0.4.14

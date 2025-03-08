@@ -36,7 +36,7 @@ class Chat_QA_chain_self:
             self.vectordb = get_vectordb(self.file_path, self.persist_path, self.embedding_model)
 
     def clear_history(self):
-        "清空历史记录"
+        """清空历史记录"""
         return self.chat_history.clear()
 
     def change_history_length(self, history_len: int = 2):
