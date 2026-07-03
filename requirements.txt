@@ -3,7 +3,7 @@ langchain-community==0.0.29
 langchain-core==0.1.52
 gradio==4.42.0
 zhipuai==2.0.1
-transformers==4.38.2
+transformers==5.3.0
 chromadb==0.4.14
 qianfan==0.3.3
 spark-ai-python==0.3.15
